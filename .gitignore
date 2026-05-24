@@ -1,0 +1,11 @@
+venv/
+# no need to commit thousands of library files
+.env/
+# never commit API keys, this protects your secrets
+data/
+# scraped data can be regenerated, no need in Git
+docs/
+# claude created md files
+__paycache__/
+# When Python runs your code, it automatically creates a __pycache__ folder containing compiled
+#versions of your .py files make your code load faster, no need to commii it
