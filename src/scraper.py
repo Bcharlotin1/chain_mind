@@ -1,7 +1,7 @@
 import requests
-from bs4 import BeautifulSoup
 import json
 import os
+from bs4 import BeautifulSoup
 
 PAGES = [
       "https://docs.langchain.com/oss/python/langchain/overview",
