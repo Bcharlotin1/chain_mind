@@ -9,7 +9,7 @@ Answer questions based only on the provided context.
 If the context doesn't contain enough information, say so honestly.
 Keep answers clear and concise."""
 
-model = "llama3-8b-8192"
+model = "llama-3.3-70b-versatile"
 
 load_dotenv()
 client = Groq(api_key=os.environ["GROQ_API_KEY"])
