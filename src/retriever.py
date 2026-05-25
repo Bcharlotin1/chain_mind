@@ -1,3 +1,4 @@
+import os
 import pickle
 import numpy as np
 import pandas as pd
@@ -12,6 +13,12 @@ THRESHOLD = 0.80
 class Retriever:
     def __init__(self):
         self.model = SentenceTransformer("all-MiniLM-L6-v2")
+
+        if not os.path.exists(INDEX_PATH) or not os.path.exists(METADATA_PATH):
+            raise FileNotFoundError(
+                "FAISS index or metadata not found. Run src/vector_store.py first."
+            )
+
         self.index = faiss.read_index(INDEX_PATH)
 
         with open(METADATA_PATH, "rb") as file:
