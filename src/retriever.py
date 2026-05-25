@@ -42,18 +42,23 @@ class Retriever:
         query_embedding = self.model.encode([query])
         query_embedding = np.array(query_embedding).astype("float32")
 
-        _distance, indices = self.index.search(query_embedding, n_result)
+        distances, indices = self.index.search(query_embedding, n_result)
         chunks = [self.store["chunks"][i] for i in indices[0]]
         sources = [self.store["metadata"][i]["source"] for i in indices[0]]
+        best_distance = float(distances[0][0])
 
-        return chunks, sources
+        return chunks, sources, best_distance
 
     def retrieve(self, query):
         answer, source, score = self.search_qa(query)
         if answer:
             return {"answer": answer, "source": source, "method": "qa_match", "score": score}
 
-        chunks, sources = self.search_vector_store(query)
+        chunks, sources, best_distance = self.search_vector_store(query)
+
+        if best_distance > 1.2:
+            return {"method": "off_topic"}
+
         context = "\n\n".join(chunks)
         return {"context": context, "sources": sources, "method": "vector_search"}
 

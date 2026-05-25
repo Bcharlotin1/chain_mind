@@ -17,6 +17,9 @@ client = Groq(api_key=os.environ["GROQ_API_KEY"])
 def ask(query, chat_history=[]):
   retrieval = retrieve(query)
 
+  if retrieval["method"] == "off_topic":
+    return "I can only answer questions about LangChain documentation.", "N/A"
+
   if retrieval["method"] == "qa_match":
     context = retrieval["answer"]
     source = retrieval["source"]

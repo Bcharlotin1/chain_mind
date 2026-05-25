@@ -1,4 +1,5 @@
 import streamlit as st
+import pandas as pd
 import os
 from src.chatbot import ask
 
@@ -9,6 +10,12 @@ st.caption("Your LangChain documentation assistant")
 with st.sidebar:
   st.header("About")
   st.write("An intelligent chatbot for LangChain documentation using hybrid RAG retrieval.")
+  st.divider()
+  if os.path.exists("qa/qa_dataset.csv"):
+      df = pd.read_csv("qa/qa_dataset.csv")
+      st.metric("Q/A Pairs", len(df))
+  raw_files = len(os.listdir("data/raw")) if os.path.exists("data/raw") else 0
+  st.metric("Pages Scraped", raw_files)
   st.divider()
   if st.button("Clear Chat"):
     st.session_state.messages = []
