@@ -33,13 +33,16 @@ def ask(query, chat_history=None):
         {"role": "user", "content": f"Context:\n{context}\n\nQuestion: {query}"}
     ]
 
-  response = client.chat.completions.create(
-        model= model,
-        messages=[
-            {"role": "system", "content": SYSTEM_PROMPT},
-            *messages,
-        ]
-    )
+  try:
+    response = client.chat.completions.create(
+          model=model,
+          messages=[
+              {"role": "system", "content": SYSTEM_PROMPT},
+              *messages,
+          ]
+      )
+    answer = response.choices[0].message.content
+  except Exception as e:
+    return f"Something went wrong while generating a response: {e}", source
 
-  answer = response.choices[0].message.content
   return answer, source
