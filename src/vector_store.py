@@ -40,4 +40,7 @@ def build_vector_store (raw_dir="data/raw"):
     pickle.dump({"chunks": all_chunks, "metadata": all_metadata}, file)
   print("Metadata saved.")
 
+if __name__ == "__main__":
+  build_vector_store()
+
 

@@ -10,7 +10,8 @@ Chain Mind uses a **hybrid retrieval** system to answer questions:
 
 1. **Q/A Search first** — searches a curated Q/A dataset for a close match using cosine similarity
 2. **Vector search fallback** — if no good match is found, searches scraped LangChain docs using FAISS
-3. **LLM answer generation** — sends the retrieved context to Groq (Llama 3.3) to generate a natural language answer
+3. **Off-topic guard** — questions unrelated to LangChain are blocked before reaching the LLM
+4. **LLM answer generation** — sends the retrieved context to Groq (Llama 3.3) to generate a natural language answer
 
 Every answer includes a **source citation** so you know where the information came from.
 
@@ -53,10 +54,9 @@ GROQ_API_KEY=your_key_here
 ```
 Get a free API key at [console.groq.com](https://console.groq.com)
 
-**5. Scrape the docs and build the vector index:**
+**5. Run setup — scrapes the docs and builds the vector index:**
 ```bash
-python src/scraper.py
-python src/vector_store.py
+python setup.py
 ```
 
 **6. Run the app:**

@@ -51,3 +51,6 @@ def scrape_all(output_dir="data/raw"):
       json.dump(page_data, file, indent=2)
       print(f"Saved: {filename}")
 
+if __name__ == "__main__":
+  scrape_all()
+
