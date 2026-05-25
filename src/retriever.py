@@ -25,14 +25,11 @@ class Retriever:
         query_embedding = self.model.encode([query])[0]
         query_norm = np.linalg.norm(query_embedding)
 
-        scores = []
-        for i, question_embedding in enumerate(self.question_embeddings):
-            dot_product = np.dot(query_embedding, question_embedding)
-            similarity = dot_product / (query_norm * self.question_norms[i])
-            scores.append(similarity)
+        dot_products = np.dot(self.question_embeddings, query_embedding)
+        scores = dot_products / (self.question_norms * query_norm)
 
         best_index = int(np.argmax(scores))
-        best_score = scores[best_index]
+        best_score = float(scores[best_index])
 
         if best_score >= THRESHOLD:
             return self.df.iloc[best_index]["answer"], self.df.iloc[best_index]["source_page"], best_score
