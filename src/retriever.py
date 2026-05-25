@@ -31,7 +31,7 @@ class Retriever:
             similarity = dot_product / (query_norm * self.question_norms[i])
             scores.append(similarity)
 
-        best_index = scores.index(max(scores))
+        best_index = int(np.argmax(scores))
         best_score = scores[best_index]
 
         if best_score >= THRESHOLD:

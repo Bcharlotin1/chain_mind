@@ -14,7 +14,9 @@ model = "llama-3.3-70b-versatile"
 load_dotenv()
 client = Groq(api_key=os.environ["GROQ_API_KEY"])
 
-def ask(query, chat_history=[]):
+def ask(query, chat_history=None):
+  if chat_history is None:
+    chat_history = []
   retrieval = retrieve(query)
 
   if retrieval["method"] == "off_topic":
