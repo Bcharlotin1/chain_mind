@@ -32,6 +32,9 @@ class Retriever:
         query_embedding = self.model.encode([query])[0]
         query_norm = np.linalg.norm(query_embedding)
 
+        if query_norm == 0:
+            return None, None, 0.0
+
         dot_products = np.dot(self.question_embeddings, query_embedding)
         scores = dot_products / (self.question_norms * query_norm)
 
