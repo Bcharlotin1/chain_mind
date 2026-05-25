@@ -22,7 +22,12 @@ PAGES = [
   ]
 
 def scrape_page(url):
-  response = requests.get(url)
+  try:
+    response = requests.get(url, timeout=10)
+    response.raise_for_status()
+  except Exception as e:
+    print(f"Failed to fetch {url}: {e}")
+    return None
 
   soup = BeautifulSoup(response.text, "html.parser")
   for tag in soup(["nav", "footer", "script", "style"]):
@@ -30,16 +35,19 @@ def scrape_page(url):
 
   text = soup.get_text(separator="\n", strip=True)
 
-  return{"url": url, "content": text}
+  return {"url": url, "content": text}
 
 def scrape_all(output_dir="data/raw"):
   os.makedirs(output_dir, exist_ok=True)
 
   for i, url in enumerate(PAGES):
-    pageData = scrape_page(url)
-    filename = f"{output_dir}/page_{i+1}.json"
+    page_data = scrape_page(url)
+    if page_data is None:
+      print(f"Skipping page {i+1} due to error")
+      continue
 
-    with open(filename, "w") as file :
-      json.dump(pageData, file, indent=2)
+    filename = f"{output_dir}/page_{i+1}.json"
+    with open(filename, "w") as file:
+      json.dump(page_data, file, indent=2)
       print(f"Saved: {filename}")
 
