@@ -12,7 +12,10 @@ Keep answers clear and concise."""
 model = "llama-3.3-70b-versatile"
 
 load_dotenv()
-client = Groq(api_key=os.environ["GROQ_API_KEY"])
+api_key = os.getenv("GROQ_API_KEY")
+if not api_key:
+    raise ValueError("GROQ_API_KEY not found. Create a .env file with your Groq API key.")
+client = Groq(api_key=api_key)
 
 def ask(query, chat_history=None):
   if chat_history is None:
